@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <title>WEBP to JPG</title>
+        <style>
+            body {
+                padding-top: 1rem;
+                text-align: center;
+                font-family: Verdana;
+            }
+            input {
+                border: 1px solid gray;
+                padding: 5px;
+            }
+            img, a {
+                display: none;
+            }
+            img {
+                width:auto;
+                height:auto;
+                max-width:100%;
+                max-height:80vh;
+            }
+            a {
+                font-size: 20px;
+            }
+            div {
+                padding: 2rem;   
+            }
+        </style>
+    </head>
+    <body>
+        <input type="file" onchange="previewFile()"><br>
+        <div>
+            <a id="downloadLink" href="#" download="image.jpg">Download</a><br>
+        </div>
+        <img src="" alt="Image preview">
+    </body>
+    <script>
+        let dataUrl = null;
+        
+        const preview = document.querySelector('img');
+        const downloadLink = document.getElementById("downloadLink");
+        
+        preview.addEventListener('load', function (event) {
+            const img = event.currentTarget;
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            canvas.width = img.width;
+            canvas.height = img.height;
+            context.drawImage(img, 0, 0);
+
+            downloadLink.href = canvas.toDataURL('image/jpg');
+            downloadLink.innerHTML = "Download (" + downloadLink.download + ")";
+            
+            img.style.display = "inline";
+            downloadLink.style.display = "inline";
+        }, false);
+        
+        function previewFile() {
+            const file = document.querySelector('input[type=file]').files[0];
+            const downloadLink = document.getElementById("downloadLink");
+            const reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                preview.src = reader.result;
+                dataUrl = reader.result;
+                downloadLink.download = file.name.substring(0, file.name.lastIndexOf(".")) + ".jpg";
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</html>
