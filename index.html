@@ -13,6 +13,7 @@
             input {
                 border: 1px solid gray;
                 padding: 5px;
+                font-size: 40px;
             }
             img, a {
                 display: none;
@@ -24,7 +25,7 @@
                 max-height:80vh;
             }
             a {
-                font-size: 20px;
+                font-size: 40px;
             }
             div {
                 padding: 2rem;   
@@ -52,8 +53,11 @@
             canvas.width = img.width;
             canvas.height = img.height;
             context.drawImage(img, 0, 0);
+            
+            const jpgDataUrl = canvas.toDataURL('image/jpg');
 
-            downloadLink.href = canvas.toDataURL('image/jpg');
+            img.src = jpgDataUrl;
+            downloadLink.href = jpgDataUrl;
             downloadLink.innerHTML = "Download (" + downloadLink.download + ")";
             
             img.style.display = "inline";
